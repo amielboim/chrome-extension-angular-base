@@ -1,13 +1,13 @@
 {
-    "name": "Chrome Extension",
+    "name": "שיויתי",
     "version": "0.2.0",
     "manifest_version": 2,
-    "description": "__MSG_appDescription__",
+    "description": "תוסף להשראת מעט קדושה באינטרנט",
     "icons": {
         "16": "images/icon-16.png",
         "128": "images/icon-128.png"
     },
-    "default_locale": "en",
+    "default_locale": "he",
     "background": {
         "page": "background.html"
     },
@@ -16,7 +16,7 @@
             "19": "images/icon-19.png",
             "38": "images/icon-38.png"
         },
-        "default_title": "Chrome Extension",
+        "default_title": "שיויתי",
         "default_popup": "popup.html"
     },
     "externally_connectable": {
@@ -52,7 +52,7 @@
             "js": [
                 "scripts/contentscript.js"
             ],
-            "run_at": "document_end",
+            "run_at": "document_start",
             "all_frames": false
         }
     ]
