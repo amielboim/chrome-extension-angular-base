@@ -48,11 +48,13 @@
             "exclude_matches": [
             ],
             "css": [
+                "css/content.css"
             ],
             "js": [
+                "bower_components/jquery/dist/jquery.min.js",
                 "scripts/contentscript.js"
             ],
-            "run_at": "document_start",
+            "run_at": "document_end",
             "all_frames": false
         }
     ]
