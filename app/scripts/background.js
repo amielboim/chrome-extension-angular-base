@@ -2,17 +2,6 @@
 
 chrome.alarms.create('replace_stat',{'periodInMinutes':1})
 
-chrome.alarms.onAlarm.addListener(function(alarm){
-    console.log(alarm);
-    nextStat(function(new_stat){
-        chrome.tabs.query({active: true}, function(data){
-				data.foreach(function(tab, key){
-						sendMessage(tab.id, 'reload');
-				})
-		})
-    })
-})
-
 
 function nextStat(callback){
 
@@ -32,6 +21,48 @@ function nextStat(callback){
 }
 
 
-function sendMessage(tab_id, message){
-	chrome.tabs.sendMessage(tab_id,{message:message});		
+function sendMessageToActive(message){
+
+    chrome.tabs.query({active: true}, function(data){
+        $.each(data,function(key, tab){
+            chrome.tabs.sendMessage(tab.id,{message:message});
+        })
+    })
+
 }
+
+function loadDate(){
+
+    var gy = moment().format('YYYY');
+    var gm = moment().format('MM');
+    var gd = moment().format('DD');
+
+    $.ajax(
+        {url:'http://www.hebcal.com/converter/?cfg=json&gy='+ gy +'&gm='+ gm +'6&gd='+ gd +'2&g2h=1'}
+    ).done(function(data){
+        //save in local storage
+        chrome.storage.sync.set({'hebrew_date': data.hebrew});
+        chrome.alarms.create('refresh_date',{'when': moment(moment().add(1, 'd').format('YYYY MM DD')).valueOf()})
+
+    }).fail(function(data){
+        chrome.storage.sync.set({'hebrew_date': ''});
+    });
+
+    sendMessageToActive('reload')
+
+
+}
+
+/* listeners */
+
+chrome.alarms.onAlarm.addListener(function(alarm){
+    console.log(alarm);
+    if(alarm.name === 'refresh_date'){
+       loadDate();
+    }
+    if(alarm.name === 'replace_stat'){
+        sendMessageToActive('reload');
+    }
+})
+
+loadDate();
