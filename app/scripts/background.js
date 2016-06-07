@@ -5,7 +5,11 @@ chrome.alarms.create('replace_stat',{'periodInMinutes':1})
 chrome.alarms.onAlarm.addListener(function(alarm){
     console.log(alarm);
     nextStat(function(new_stat){
-        console.log(new_stat);
+        chrome.tabs.query({active: true}, function(data){
+				data.foreach(function(tab, key){
+						sendMessage(tab.id, 'reload');
+				})
+		})
     })
 })
 
@@ -25,4 +29,9 @@ function nextStat(callback){
         });
 
     });
+}
+
+
+function sendMessage(tab_id, message){
+	chrome.tabs.sendMessage(tab_id,{message:message});		
 }

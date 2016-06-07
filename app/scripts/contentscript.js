@@ -12,3 +12,12 @@ chrome.storage.sync.get('current_stat', function(data){
     $('body').append(bot_menu);
 
 })
+
+
+chrome.runtime.onMessage.addListener(function(message){
+	if(message.message === 'reload'){
+		 chrome.storage.sync.get('current_stat', function(data){
+			 $('#sh-wrapper p).text(data.current_stat);
+		})
+	}	
+})
