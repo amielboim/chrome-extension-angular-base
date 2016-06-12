@@ -14,7 +14,8 @@ function nextStat(callback){
         }
         chrome.storage.sync.set({'current_stat': data.current_list.list[data.current_key],
             'current_key': data.current_key}, function(){
-                callback(data.current_list.list[data.current_key])
+            console.log(data.current_list.list[data.current_key]);
+                if(callback != undefined)callback(data.current_list.list[data.current_key])
         });
 
     });
@@ -38,7 +39,7 @@ function loadDate(){
     var gd = moment().format('DD');
 
     $.ajax(
-        {url:'http://www.hebcal.com/converter/?cfg=json&gy='+ gy +'&gm='+ gm +'6&gd='+ gd +'2&g2h=1'}
+        {url:'http://www.hebcal.com/converter/?cfg=json&gy='+ gy +'&gm='+ gm +'&gd='+ gd +'&g2h=1'}
     ).done(function(data){
         //save in local storage
         chrome.storage.sync.set({'hebrew_date': data.hebrew});
@@ -61,6 +62,7 @@ chrome.alarms.onAlarm.addListener(function(alarm){
        loadDate();
     }
     if(alarm.name === 'replace_stat'){
+        nextStat();
         sendMessageToActive('reload');
     }
 })

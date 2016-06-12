@@ -19,3 +19,8 @@
 	height: 20px;
 	font-family: 'Open Sans Hebrew', sans-serif;
 }
+
+.sh-col{
+	width: 33.333%;
+	display: inline-block;
+}
